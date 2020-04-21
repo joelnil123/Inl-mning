@@ -40,7 +40,6 @@ namespace SSFIEF.Controllers
 
             return movieStudio;
         }
-
         // PUT: api/MovieStudio/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -76,22 +75,14 @@ namespace SSFIEF.Controllers
         // POST: api/MovieStudio
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<MovieStudio>> PostMovieStudio(MovieStudio movieStudio)
-        {
-            _context.MovieStudio.Add(movieStudio);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMovieStudio", new { id = movieStudio.Id }, movieStudio);
-        }
-
-        // DELETE: api/MovieStudio/5
-        [HttpDelete("{id}")]
+        
+        [HttpDelete("DeleteMovieStudio{id}")]
         public async Task<ActionResult<MovieStudio>> DeleteMovieStudio(int id)
         {
             var movieStudio = await _context.MovieStudio.FindAsync(id);
             if (movieStudio == null)
             {
+
                 return NotFound();
             }
 
@@ -99,6 +90,15 @@ namespace SSFIEF.Controllers
             await _context.SaveChangesAsync();
 
             return movieStudio;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<MovieStudio>> PostMovieStudio(MovieStudio movieStudio)
+        {
+            _context.MovieStudio.Add(movieStudio);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetMovieStudio", new {Id = movieStudio.Id}, movieStudio);
         }
 
         private bool MovieStudioExists(int id)

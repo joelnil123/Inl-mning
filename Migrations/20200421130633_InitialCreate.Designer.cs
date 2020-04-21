@@ -9,7 +9,7 @@ using SSFIEF;
 namespace SSFIEF.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20200417121434_InitialCreate")]
+    [Migration("20200421130633_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,15 +30,10 @@ namespace SSFIEF.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("MovieId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("MoviesId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("MovieName")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MoviesId");
 
                     b.ToTable("lables");
                 });
@@ -60,32 +55,6 @@ namespace SSFIEF.Migrations
                     b.ToTable("MovieStudio");
                 });
 
-            modelBuilder.Entity("SSFIEF.MovieStudioHandeler", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MovieStudioId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ReviewId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MovieId");
-
-                    b.HasIndex("MovieStudioId");
-
-                    b.HasIndex("ReviewId");
-
-                    b.ToTable("MovieStudioHandeler");
-                });
-
             modelBuilder.Entity("SSFIEF.Movies", b =>
                 {
                     b.Property<int>("Id")
@@ -101,15 +70,10 @@ namespace SSFIEF.Migrations
                     b.Property<bool>("IsRented")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MovieStudioId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MovieStudioId");
 
                     b.ToTable("Movies");
                 });
@@ -144,6 +108,9 @@ namespace SSFIEF.Migrations
                     b.Property<int>("Grade")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("MovieStudioId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("MoviesId")
                         .HasColumnType("INTEGER");
 
@@ -152,50 +119,17 @@ namespace SSFIEF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MovieStudioId");
+
                     b.HasIndex("MoviesId");
 
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("SSFIEF.Lable", b =>
-                {
-                    b.HasOne("SSFIEF.Movies", "Movies")
-                        .WithMany()
-                        .HasForeignKey("MoviesId");
-                });
-
-            modelBuilder.Entity("SSFIEF.MovieStudioHandeler", b =>
-                {
-                    b.HasOne("SSFIEF.Movies", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SSFIEF.MovieStudio", "MovieStudio")
-                        .WithMany()
-                        .HasForeignKey("MovieStudioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SSFIEF.Review", "Review")
-                        .WithMany()
-                        .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SSFIEF.Movies", b =>
-                {
-                    b.HasOne("SSFIEF.MovieStudio", null)
-                        .WithMany("Movies")
-                        .HasForeignKey("MovieStudioId");
-                });
-
             modelBuilder.Entity("SSFIEF.RentedMovies", b =>
                 {
                     b.HasOne("SSFIEF.MovieStudio", "MovieStudio")
-                        .WithMany()
+                        .WithMany("RentedMovies")
                         .HasForeignKey("MovieStudioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -209,6 +143,12 @@ namespace SSFIEF.Migrations
 
             modelBuilder.Entity("SSFIEF.Review", b =>
                 {
+                    b.HasOne("SSFIEF.MovieStudio", "movieStudio")
+                        .WithMany()
+                        .HasForeignKey("MovieStudioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SSFIEF.Movies", null)
                         .WithMany("Reviews")
                         .HasForeignKey("MoviesId");

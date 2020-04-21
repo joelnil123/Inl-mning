@@ -86,7 +86,7 @@ namespace SSFIEF.Controllers
         }
 
         // DELETE: api/Review/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteTrivia{id}")]
         public async Task<ActionResult<Review>> DeleteReview(int id)
         {
             var review = await _context.Reviews.FindAsync(id);

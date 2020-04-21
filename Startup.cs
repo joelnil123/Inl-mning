@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace SSFIEF
 {
@@ -28,6 +29,11 @@ namespace SSFIEF
         {
             services.AddDbContext<MyDbContext>(opt => opt.UseSqlite("Data Source=Databas.db"));
             services.AddControllers();
+
+            services.AddMvc(options =>
+            {
+               options.OutputFormatters.Add(new XmlSerializerOutputFormatter()); 
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

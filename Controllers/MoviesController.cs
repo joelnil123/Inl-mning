@@ -20,6 +20,20 @@ namespace SSFIEF.Controllers
             _context = context;
         }
 
+        [HttpPut("ChangeMovieAmount/{id}")]
+        public async Task<ActionResult<Movies>> ChangeRentQuote(int id, Movies movie)
+        {
+            var movieToChange = _context.Movies.Find(id);
+            movieToChange.AmountOfMovies = movie.AmountOfMovies;
+            if (movieToChange.AmountOfMovies > 20)
+            {
+                return BadRequest();
+            }
+            await _context.SaveChangesAsync();
+            return movieToChange;
+        }
+
+
         // GET: api/Movies
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movies>>> GetMovies()

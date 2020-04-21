@@ -6,7 +6,7 @@ namespace SSFIEF
     {
         public DbSet<Movies> Movies { get; set; }
         public DbSet<MovieStudio> MovieStudio { get; set; }
-        public DbSet<MovieStudioHandeler> MovieStudioHandeler { get; set; }
+        
         public DbSet<Review> Reviews { get; set; }
         public DbSet<RentedMovies> RentedMovies { get; set; }
         public DbSet<Lable> lables { get; set;}
